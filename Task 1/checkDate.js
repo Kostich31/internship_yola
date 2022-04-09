@@ -1,28 +1,18 @@
 function checkDate(timestamp) {
-    var day = new Date(timestamp * 1000).getDate();
-    var month = new Date(timestamp * 1000).getMonth();
-    var year = new Date(timestamp * 1000).getFullYear();
-    var hour = new Date(timestamp * 1000).getHours();
-
-    const current_Date = new Date(Date.now());
-    const current_day = current_Date.getDate();
-    const current_month = current_Date.getMonth() + 1;
-    const currentYear = current_Date.getFullYear();
-
-    let isSameDate = false;
-
-    if (year == currentYear) {
-        if (month == current_month) {
-            if (day == current_day) {
-                isSameDate = true;
-            } else {
-                isSameDate = false;
-            }
-        }
-    }
-
+    // timestamp в секундах, поэтому переводим в ms
+    const date = new Date(timestamp * 1000);
+    // Использую UTC для унификации времени в случае, если временная зона отличается
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth();
+    const year = date.getUTCFullYear();
+    
+    const currentDate = new Date(Date.now());
+    const currentDay = currentDate.getUTCDate();
+    const currentMonth = currentDate.getUTCMonth();
+    const currentYear = currentDate.getUTCFullYear();
+    // Перенёс вычисления сразу в return для лаконичности и краткости
     return {
-        isSameDate: isSameDate,
-        dayPeriod: hour > 11 ? 'pm' : 'am'
-    }
+        isSameDate: year === currentYear && month === currentMonth && day === currentDay,
+        dayPeriod: date.getUTCHours() > 11 ? 'pm' : 'am'
+    };
 }
